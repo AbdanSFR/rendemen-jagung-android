@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 import com.rendemen.jagung.model.CalculationMode
 import com.rendemen.jagung.viewmodel.RendemenViewModel
 
@@ -136,17 +137,17 @@ fun CalculatorScreen(
                 Button(
                     onClick = {
                         viewModel.saveRecord(
-                            onSuccess = {
-                                kotlinx.coroutines.GlobalScope.launch {
-                                    snackbarHostState.showSnackbar("Riwayat tersimpan ✓")
-                                }
-                            },
-                            onError = {
-                                kotlinx.coroutines.GlobalScope.launch {
-                                    snackbarHostState.showSnackbar("Lengkapi dulu nilai yang diperlukan.")
-                                }
+                        onSuccess = {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar("Riwayat tersimpan ✓")
                             }
-                        )
+                        },
+                        onError = {
+                            coroutineScope.launch {
+                                snackbarHostState.showSnackbar("Lengkapi dulu nilai yang diperlukan.")
+                            }
+                        }
+                    )
                     },
                     modifier = Modifier.weight(1.5f),
                     shape = RoundedCornerShape(12.dp),
